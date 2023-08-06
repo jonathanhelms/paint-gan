@@ -9,7 +9,8 @@ from tensorflow.keras.optimizers import RMSprop
 import cv2
 import matplotlib.image as mpimg
 import tensorflow as tf
-
+from keras.constraints import Constraint
+from keras import backend
 
 # path_to_images = 'VanGogh/'
 # path_to_images = 'landscape/'
@@ -64,16 +65,13 @@ def build_discriminator():
     validity = model(img)
     
     return Model(img, validity)
-    
-  
-from keras import backend
+
  
 # implementation of wasserstein loss
 def wasserstein_loss(y_true, y_pred):
     return backend.mean(y_true * y_pred)
     
 
-from keras.constraints import Constraint
 # clip model weights to a given hypercube
 class ClipConstraint(Constraint):
     def __init__(self, clip_value):
@@ -138,6 +136,7 @@ def train(epochs, batch_size=128, save_interval=50):
         if epoch % save_interval == 0:
             save_imgs(epoch)
             
+
 def save_imgs(epoch):
     r, c = 2, 2
     noise = np.random.normal(0, 1, (r * c, 100))
