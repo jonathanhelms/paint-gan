@@ -156,7 +156,7 @@ def save_imgs(epoch):
     plt.close()
     
 
-def run_gan():
+def run_gan(path_to_images):
     """
     Function to run GAN model.
     """
@@ -181,6 +181,6 @@ def run_gan():
     combined = Model(z, valid)
     combined.compile(loss='binary_crossentropy', optimizer=optimizer)
 
-    train(epochs=15001, batch_size=128, save_interval=1000)
+    train(path_to_images, epochs=15001, batch_size=128, save_interval=1000)
 
     generator.save('generator_modelport4.h5')
