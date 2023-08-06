@@ -12,10 +12,6 @@ import tensorflow as tf
 from keras.constraints import Constraint
 from keras import backend
 
-# path_to_images = 'VanGogh/'
-# path_to_images = 'landscape/'
-# path_to_images = 'abstract/'
-path_to_images = 'ports/'
 
 img_rows = 100
 img_cols = 100
