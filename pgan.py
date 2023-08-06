@@ -86,7 +86,7 @@ class ClipConstraint(Constraint):
         return {'clip_value': self.clip_value}
         
         
-def train(epochs, batch_size=128, save_interval=50):
+def train(path_to_images, epochs, batch_size=128, save_interval=50):
     X_train = []
     
     for i in range(3000):
@@ -155,28 +155,32 @@ def save_imgs(epoch):
     fig.savefig("portimages/port_%d.png" % epoch)
     plt.close()
     
- 
-optimizer = Adam(0.00005, 0.5)
 
-discriminator = build_discriminator()
-discriminator.compile(loss='binary_crossentropy',
-                      optimizer=optimizer,
-                      metrics=['accuracy'])
+def run_gan():
+    """
+    Function to run GAN model.
+    """
+    optimizer = Adam(0.00005, 0.5)
+
+    discriminator = build_discriminator()
+    discriminator.compile(loss='binary_crossentropy',
+                        optimizer=optimizer,
+                        metrics=['accuracy'])
 
 
-generator = build_generator()
-generator.compile(loss='binary_crossentropy', optimizer=optimizer)
+    generator = build_generator()
+    generator.compile(loss='binary_crossentropy', optimizer=optimizer)
 
-z = Input(shape=(100,))
-img = generator(z)
+    z = Input(shape=(100,))
+    img = generator(z)
 
-discriminator.trainable = False
+    discriminator.trainable = False
 
-valid = discriminator(img)
+    valid = discriminator(img)
 
-combined = Model(z, valid)
-combined.compile(loss='binary_crossentropy', optimizer=optimizer)
+    combined = Model(z, valid)
+    combined.compile(loss='binary_crossentropy', optimizer=optimizer)
 
-train(epochs=15001, batch_size=128, save_interval=1000)
+    train(epochs=15001, batch_size=128, save_interval=1000)
 
-generator.save('generator_modelport4.h5')
+    generator.save('generator_modelport4.h5')
